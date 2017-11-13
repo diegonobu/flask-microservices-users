@@ -1,8 +1,10 @@
+import os
 from flask import jsonify
 from flask.app import Flask
 
 app = Flask(__name__)
 
+app.settings = os.getenv('APP_SETTINGS')
 app.config.from_object('project.config.DevelopmentConfig')
 
 
