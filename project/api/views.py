@@ -68,3 +68,23 @@ def get_single_user(user_id):
             }), 200
     except ValueError:
         return jsonify(response_object), 404
+
+
+@users_blueprint.route('/users', methods=['GET'])
+def get_all_users():
+    users = User.query.all()
+    users_list = []
+    for user in users:
+        user_object = {
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'created_at': user.created_at
+        }
+        users_list.append(user_object)
+    return jsonify({
+        'status': 'success',
+        'data': {
+            'users': users_list
+        }
+    }), 200
