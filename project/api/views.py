@@ -45,3 +45,26 @@ def add_user():
             'status': 'fail',
             'message': 'Invalid payload.'
         }), 400
+
+
+@users_blueprint.route('/users/<user_id>', methods=['GET'])
+def get_single_user(user_id):
+    response_object = {
+        'status': 'fail',
+        'message': 'User does not exist'
+    }
+    try:
+        user = User.query.filter_by(id=int(user_id)).first()
+        if not user:
+            return jsonify(response_object), 404
+        else:
+            return jsonify({
+                'status': 'success',
+                'data': {
+                    'username': user.username,
+                    'email': user.email,
+                    'created_at': user.created_at
+                }
+            }), 200
+    except ValueError:
+        return jsonify(response_object), 404
